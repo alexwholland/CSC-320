@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage {inputenc, fullpage, listings, amsmath, graphicx, wasysym, cancel, amssymb}
+
+\parindent 0pt
+
+\title{%
+   CSc 320: Foundations of Computer Science (Summer 2022)\\
+    \Large Alex Holland \\
+    Assignment 4\\
+    }
+\date{}
+
+\begin{document}
+
+\maketitle
+
+{\bf Question 1}\\
+Consider the language $L = \{a^nb^ma^nb^m | m, n \geq 0 \}$ Assume that $L$ is a context-free language.\\
+If we can prove that this string cannot be pumped, then $L$ is not a context free language.\\
+Let $p$ be the pumping length for $L$\\
+Choose string $s = a^pb^pa^pb^p$, $s \in L, \; |s| \geq p$\\
+
+According to PL:
+\begin{enumerate}
+  \item for each $i \geq 0, \; uv^ixy^iz \in A,$
+  \item $|vy| > 0,$ and
+  \item $|vxy| \leq p$
+\end{enumerate}
+
+From 2: $vy \neq \epsilon$, i.e. $v \neq \epsilon$ or $y \neq \epsilon$\\
+
+Fome 3: $|vxy| \leq p$, yields the following cases:
+\begin{itemize}
+    \item $vxy = a...a \Longrightarrow uv^2xy^2z = a^kb^pa^lb^p$ with $k > p$ or $l > p$
+    \item $vxy = b...b \Longrightarrow uv^2xy^2z = a^pb^ka^pb^l$ with $k > p$ or $l > p$
+    \item $vxy = a...ab...b \Longrightarrow$ either $wv^2xy^2z = a^pb^pa^kb^l$ or $wv^2xy^2z = a^kb^la^pb^p$ with $k > p$ or $l > p$
+    \item $vxy = b...ba...a \Longrightarrow uv^2xy^2z = a^pb^ka^lb^p$ with $k > p$ or $l > p$
+\end{itemize}
+
+
+There is no rewriting of $s$ into $s = uvxyz$ and $uv^2xy^2z \in L$. Therefore string $s$ cannot be pumped without violating the pumping lemma for CFL, hence $L$ is not a context-free language
+
+
+\break
+{\bf Question 2}\\
+Let $L_1$ and $L_2$ be two decidable Languages. $M_1$ and $M_2$ be the Turing machines that decides $L_1$ and $L_2$ respectively.
+There exists a Turing machine $M$ such that, $L(M) = L_1 \cup L_2$.\\
+
+We can create a description of $M$ for an input of $w$ as follows:
+\begin{enumerate}
+  \item Run $M_1$ on $w$. If $M_1$ accepts, {\bf accept}.
+  \item Else run $M_2$ on $w$. If $M_2$ accepts, {\bf accept}, Else {\bf reject}."
+\end{enumerate}
+
+$M$ Accepts $w$ if either $M_1$ or $M_2$ accepts it, or if both $M_1$ and $M_2$ rejects, then $M$ rejects.
+If $w \in L_1 \cup L_2$. Then $w$ is in either one of or both $L_1$ and $L_2$.
+Likewise, if $w \notin L_1 \cup L_2$, then both $M_1$ and $M_2$ reject $w$, so $M$ rejects $w \notin L_1 \cup L_2$. 
+If $w \in L_1$, then $M_1$ accepts $w$, and $M$ will then accept $w$, regardless of the result of $M_2$.
+$M_1$ rejects $w$ if $w \in L_2$ and $w \notin L_1$ since $M_1$ is a decider, and since $w \in L_2$, $M_2$ would accept $w$, so $M$ would also then accept $w$.
+Therefore, there exists a Turing machine $M$ that recognizes $L_1 \cup L_2$, $\therefore$ the class of decidable languages is closed under the union operation.\\
+
+
+
+\bigskip
+{\bf Question 3}\\
+Consider language $L = \{a^nb^nc^n | n \geq 0 \}$. The following is an implementation-level description of a Turing machine that decides $L$.\\
+
+"On input string $w$:
+\begin{enumerate}
+  \setcounter{enumi}{-1}
+  \item Scan the tape from left to right to make sure that the tape input is in the form $a^nb^nc^n$, $n \geq 0$, if it is not, {\bf reject}.
+  \item Return tape head to left-hand end of tape.
+  \item Repeat the following steps until no more unmarked a's are left on the tape
+  \begin{itemize}
+      \item Scan the tape for the first unmarked (leftmost) a, mark it.
+      \item Scan right until an unmarked b is found in the tape and mark it. If there are no b's, {\bf reject}.
+      \item Scan right until an unmarked c is found in the tap and mark it. If there are no c's, {\bf reject}.
+      \item Move the tape head back to the left-hand side of the tape, and go to step 2.
+  \end{itemize}
+  \item If the tape contains any unmarked b's or c's, {\bf reject}. Otherwise, {\bf  accept}."
+\end{enumerate}
+
+\end{document}
